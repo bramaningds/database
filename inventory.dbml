@@ -1,0 +1,28 @@
+Table items {
+    id integer [primary key, increment]
+    name varchar [unique]
+    quantity double
+    created_at datetime
+    updated_at datetime
+}
+
+Table stores {
+    id integer [primary key, increment]
+    name varchar [unique]
+    created_at datetime
+    updated_at datetime
+}
+
+Table displacements {
+    id integer [primary key, increment]
+    from_store_id integer [ref: > stores.id]
+    to_store_id integer [ref: > stores.id]
+    created_at datetime
+    updated_at datetime
+}
+
+Table displacement_details {
+    id integer [primary key, increment]
+    item_id integer [ref: > items.id]
+    quantity double
+}
