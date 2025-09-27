@@ -1,23 +1,23 @@
 Table products {
-    id integer [primary key, increment]
-    name varchar [unique]
-    description text [null]
-    price double [not null]
-    created_at datetime
-    updated_at datetime
+  id integer [primary key, increment]
+  name varchar [unique]
+  description text [null]
+  price double [not null]
+  created_at datetime
+  updated_at datetime
 }
 
 Table sales {
-    id integer [primary key, increment]
-    sold_at datetime
-    created_at datetime
-    updated_at datetime
+  id integer [primary key, increment]
+  sold_at datetime
+  created_at datetime
+  updated_at datetime
 }
 
 Table sale_details {
-    id integer [primary key, increment]
-    sale_id integer [ref: > sales.id]
-    product_id integer [ref: > products.id]
-    quantity double
-    price double
+  id integer [primary key, increment]
+  sale_id integer [ref: > sales.id]
+  product_id integer [ref: > products.id]
+  quantity double
+  price double
 }
