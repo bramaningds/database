@@ -1,0 +1,41 @@
+Table stores {
+    id integer [primary key, increment]
+    name varchar [unique]
+    created_at datetime
+    updated_at datetime
+}
+
+Table users {
+    id integer [primary key, increment]
+    name varchar
+    email varchar [unique]
+    password varchar
+    created_at datetime
+    updated_at datetime
+}
+
+Table products {
+    id integer [primary key, increment]
+    name varchar [unique]
+    description text
+    price double
+    created_at datetime
+    updated_at datetime
+}
+
+Table sales {
+    id integer [primary key, increment]
+    store_id integer [ref: > stores.id]
+    user_id integer [ref: > users.id]
+    sold_at datetimeD
+    created_at datetime
+    updated_at datetime
+}
+
+Table sale_details {
+    id integer [primary key, increment]
+    sale_id integer [ref: > sales.id]
+    product_id integer [ref: > products.id]
+    quantity double
+    price double
+}
