@@ -1,8 +1,7 @@
+// LEVEL 1
 Table stores {
   id integer [primary key, increment]
   name varchar [unique]
-  created_at datetime
-  updated_at datetime
 }
 
 Table users {
@@ -10,8 +9,6 @@ Table users {
   name varchar
   email varchar [unique]
   password varchar
-  created_at datetime
-  updated_at datetime
 }
 
 Table products {
@@ -23,6 +20,7 @@ Table products {
   updated_at datetime
 }
 
+// LEVEL 2
 Table sales {
   id integer [primary key, increment]
   store_id integer [ref: > stores.id]
@@ -32,6 +30,7 @@ Table sales {
   updated_at datetime
 }
 
+// LEVEL 3
 Table sale_details {
   id integer [primary key, increment]
   sale_id integer [ref: > sales.id]

@@ -108,8 +108,7 @@ Table purchases {
 
 Table transfers {
     id integer [primary key, increment]
-    from_store_id integer [ref: > stores.id]
-    to_store_id integer [ref: > stores.id]
+    store_id integer [ref: > stores.id]
     user_id integer [ref: > users.id]
     sent_at datetime [null]
     received_at datetime [null]
@@ -139,7 +138,8 @@ Table purchase_details {
 Table transfer_details {
     id integer [primary key, increment]
     transfer_id integer [ref: > transfers.id]
-    stock_id integer [ref: > stocks.id]
+    store_id integer [ref: > stores.id]
+    item_id integer [ref: > products.id]
     quantity double
     unit varchar
 }

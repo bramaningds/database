@@ -1,0 +1,61 @@
+// LEVEL 1
+Table menus {
+    id integer [primary key, increment]
+    name varchar
+    price double
+    is_raw boolean
+}
+
+Table ingredients {
+    id integer [primary key, increment]
+    name varchar
+    quantity double
+    unit varchar
+}
+
+// LEVEL 2
+Table recipes {
+    id integer [primary key, increment]
+    menu_id integer [ref: > menus.id]
+    ingredient_id integer [ref: > ingredients.id]
+    quantity double
+}
+
+Table sales {
+    id integer [primary key, increment]
+}
+
+Table purchases {
+    id integer [primary key, increment]
+}
+
+// LEVEL 3
+Table sale_items {
+    id integer [primary key, increment]
+    sale_id integer [ref: > sales.id]
+    menu_id integer [ref: > menus.id]
+    quantity double
+    price double
+}
+
+Table purchase_items {
+    id integer [primary key, increment]
+    purchase_id integer [ref: > purchases.id]
+    ingredient_id integer [ref: > ingredients.id]
+    quantity double
+}
+
+Table cookings {
+    id integer [primary key, increment]
+    sale_id integer [ref: > sales.id]
+    menu_id integer [ref: > menus.id]
+    quantity double
+}
+
+// LEVEL 4
+Table cooking_items {
+    id integer [primary key, increment]
+    cooking_id integer [ref: > cookings.id]
+    ingredient_id integer [ref: > ingredients.id]
+    quantity double
+}

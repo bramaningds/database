@@ -1,0 +1,63 @@
+// LEVEL 1
+Table plans {
+    id integer [primary key, increment]
+    name varchar
+}
+
+Table subscribables {
+    id integer [primary key, increment]
+    subscribable_id integer
+    subscribable_type varchar
+}
+
+// LEVEL 2
+Table subscriptions {
+    id integer [primary key, increment]
+    subscribable_id integer [ref: > subscribables.id]
+    plan_id integer [ref: > plans.id]
+    started_at datetime
+    end_at datetime
+    subscription_type subscription_type
+    subscription_status subscription_status
+}
+
+// LEVEL 3
+Table invoices {
+    id integer [primary key, increment]
+    subscription_id integer [ref: > subscriptions.id]
+    issued_date date
+    due_date date
+    amount double
+}
+
+// LEVEL 4
+Table payments {
+    id integer [primary key, increment]
+    invoice_id integer [ref: > invoices.id]
+    paid_at datetime
+    method varchar
+    amount double
+    status payment_status
+}
+
+// ENUM
+Enum subscription_type {
+    one_time
+    auto_renew
+    prepaid
+}
+
+Enum subscription_status {
+    active
+    suspended [note: 'terminated by system']
+    cancelled [note: 'terminated by user']
+    expired
+    grace_period
+}
+
+Enum payment_status {
+    paid
+    unpaid
+    pending
+    expired
+}

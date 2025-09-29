@@ -7,8 +7,6 @@ Table items {
 Table units {
     id integer [primary key, increment]
     name varchar
-    parent_unit_id integer [ref: > units.id]
-    fraction double
 }
 
 // LEVEL 2
@@ -19,11 +17,20 @@ Table stocks {
     quantity double
 }
 
+Table convertibles {
+    id integer [primary key, increment]
+    item_id integer [ref: > items.id]
+    from_unit_id integer [ref: > units.id]
+    to_unit_id integer [ref: > units.id]
+    fraction double
+    method varchar [note: 'split,merge']
+}
+
 // LEVEL 3
 Table conversions {
     id integer [primary key, increment]
     from_stock_id integer [ref: > stocks.id]
     to_stock_id integer [ref: > stocks.id]
     fraction double
-    conversion_type varchar [note: 'value: split, merge']
+    method varchar [note: 'split,merge']
 }

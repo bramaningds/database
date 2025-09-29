@@ -1,0 +1,15 @@
+Table users {
+    id integer [primary key, increment]
+    note: 'user of the system appointed by admin, or register'
+}
+
+Table members {
+    id integer [primary key, increment]
+    note: 'very end user of the system, must have user before register as a member'
+}
+
+Table authenticables {
+    id integer [primary key, increment]
+    authenticable_id integer
+    authenticable_type varchar
+}

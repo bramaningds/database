@@ -1,0 +1,71 @@
+// LEVEL 1
+Table users {
+    id integer [primary key, increment]
+    name varchar
+    email varchar
+    password varchar
+}
+
+Table tenants {
+    id integer [primary key, increment]
+    name varchar
+}
+
+Table services {
+    id integer [primary key, increment]
+    name varchar
+}
+
+Table plans {
+    id integer [primary key, increment]
+    name varchar
+}
+
+// LEVEL 2
+Table applications {
+    id integer [primary key, increment]
+    tenant_id integer [ref: > tenants.id]
+    service_id integer [ref: > services.id]
+}
+
+// LEVEL 3
+Table assignments {
+    id integer [primary key, increment]
+    application_id integer [ref: > applications.id]
+    user_id integer [ref: > users.id]
+    role varchar
+}
+
+Table subscriptions {
+    id integer [primary key, increment]
+    application_id ineteger [ref: > applications.id]
+    plan_id integer [ref: > plans.id]
+    start_on date
+    end_date date [null]
+    auto_renew boolean
+    status varchar [note: 'active,expired,canceled']
+}
+
+// LEVEL 4
+Table tokens {
+    id integer [primary key, increment]
+    assignment_id integer [ref: > assignments.id]
+    token varchar
+}
+
+Table invoices {
+    id integer [primary key, increment]
+    subscription_id integer [ref: > subscriptions.id]
+    issued_date date
+    due_date date
+    amount double
+}
+
+Table payments {
+    id integer [primary key, increment]
+    invoice_id integer [ref: > invoices.id]
+    paid_at datetime
+    method varchar
+    amount double
+    status varchar [note: 'success,pending,failed']
+}
