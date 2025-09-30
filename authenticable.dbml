@@ -12,4 +12,6 @@ Table authenticables {
     id integer [primary key, increment]
     authenticable_id integer
     authenticable_type varchar
+    email varchar
+    password varchar
 }
