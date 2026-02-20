@@ -1,0 +1,12 @@
+Table sales {
+  id integer [primary key, increment]
+  sold_at datetime
+}
+
+Table sale_items {
+  id integer [primary key, increment]
+  sale_id integer [ref: > sales.id]
+  saleable_id integer
+  quantity double
+  price double
+}

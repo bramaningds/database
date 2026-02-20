@@ -1,27 +1,33 @@
 // LEVEL 1
 Table items {
-  id integer [primary key, increment]
-  name varchar [unique]
+    id integer [primary key, increment]
+    name varchar [unique]
+}
+
+Table materials {
+    id integer [primary key, increment]
+    name varchar [unique]
 }
 
 // LEVEL 2
+Table item_materials {
+    id integer [primary key, increment]
+    item_id integer [ref: > items.id]
+    material_id integer [ref: > materials.id]
+}
+
 Table productions {
-  id integer [primary key, increment]
-  item_id integer [ref: > items.id]
-  start_at datetime
-  finished_at datetime
+    id integer [primary key, increment]
+    item_id integer [ref: > items.id]
+    quantity double
+    start_at datetime
+    finished_at datetime
 }
 
+// LEVEL 3
 Table production_details {
-  id integer [primary key, increment]
-  production_id integer [ref: > productions.id]
-  item_id integer [ref: > items.id]
-  quantity double
-  price double
-}
-
-Table processes {
-  id integer [primary key, increment]
-  item_id integer [ref: > items.id]
-  parent_process_id integer [ref: > processes.id]
+    id integer [primary key, increment]
+    production_id integer [ref: > productions.id]
+    material_id integer [ref: > materials.id]
+    quantity double
 }

@@ -1,0 +1,144 @@
+Table users {
+  id integer [primary key, increment]
+  name varchar(100)
+  email varchar(100) [unique]
+  password varchar(255)
+  role varchar(100) [note: 'admin,treasurer,collector,user']
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table members {
+  id integer [primary key, increment]
+  name varchar(100)
+  address varchar(1000) [null]
+  phone varchar(20) [null]
+  is_active bool [default: true]
+  registered_at datetime
+  user_id integer [ref: > users.id]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table account_types {
+  id integer [primary key, increment]
+  name varchar(100)
+  description text [null]
+  is_mandatory bool [null, default: false]
+  is_recurring bool [null, default: false]
+  is_fixed_amount bool [null, default: false]
+  amount decimal [null]
+  has_balance bool [null, default: false]
+  is_withdrawable bool [null, default: false]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table accounts {
+  id integer [primary key, increment]
+  account_type_id integer [ref: > account_types.id]
+  member_id integer [ref: > members.id]
+  balance decimal(18,2) [default: 0]
+  opened_at datetime
+  opened_by_id integer [ref: > users.id]
+  closed_at datetime [null]
+  closed_by_id integer [null, ref: > users.id]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table billings {
+  id integer [primary key, increment]
+  account_id integer [ref: > accounts.id]
+  period_date datetime
+  billing_date datetime [null]
+  due_date datetime [null]
+  amount decimal(18,2)
+}
+
+Table payments {
+  id integer [primary key, increment]
+  user_id integer [ref: > users.id]
+  amount decimal(18,2)
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table payment_items {
+  id integer [primary key, increment]
+  payment_id integer [ref: > payments.id]
+  account_id integer [ref: > accounts.id]
+  amount decimal(18,2)
+  billing_id integer [null, ref: > billings.id]
+}
+
+Table deposits {
+  id integer [primary key, increment]
+  user_id integer [ref: > users.id]
+  amount decimal(18,2)
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table deposit_items {
+  id integer [primary key, increment]
+  deposit_id integer [ref: > deposits.id]
+  account_id integer [ref: > accounts.id]
+  amount decimal(18,2)
+  billing_id integer [null, ref: > billings.id]
+}
+
+Table remittances {
+  id integer [primary key, increment]
+  user_id integer [ref: > users.id]
+  amount decimal(18,2)
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table remittance_items {
+  id integer [primary key, increment]
+  remittance_id integer [ref: > remittances.id, note: 'Morph relation to deposit/payment']
+  remittable_type varchar(50)
+  remittable_id integer
+  amount decimal(18,2)
+}
+
+Table withdrawals {
+  id integer [primary key, increment]
+  user_id integer [ref: > users.id]
+  admin_fee decimal(18,2) [null, default: 0]
+  amount decimal(18,2)
+  withdrawn_at datetime
+  description text [null]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table withdrawal_items {
+  id integer [primary key, increment]
+  withdrawal_id integer [ref: > withdrawals.id]
+  account_id integer [ref: > accounts.id]
+  amount decimal(18,2)
+}
+
+Table audit_trails {
+  id integer [primary key, increment]
+  table_name varchar(100)
+  field_name varchar(100)
+  record_id integer
+  old_value text [null]
+  new_value text [null]
+  changed_at timestamp
+  user_id integer [ref: > users.id]
+  notes text [null]
+  created_at timestamp
+}

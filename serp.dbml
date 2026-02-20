@@ -1,0 +1,84 @@
+Table stocks {
+  id integer [primary key, increment]
+  code varchar(10)
+  company varchar(100)
+  industry varchar(100)
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table keywords {
+  id integer [primary key, increment]
+  keyword varchar(100)
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table serp_tasks {
+  id integer [primary key, increment]
+  keyword_id integer [ref: > keywords.id]
+  task_id varchar(100)
+  task_status_code varchar(16)
+  task_status_message varchar(16)
+  task_time varchar(16)
+  task_cost decimal
+  task_path varchar
+  task_data_api varchar(16)
+  task_data_function varchar(16)
+  task_data_se varchar(16)
+  task_data_se_type varchar(16)
+  task_result_keyword varchar(16)
+  task_result_type varchar(16)
+  task_result_se_domain varchar(16)
+  task_result_location_code varchar(16)
+  task_result_language_code varchar(16)
+  task_result_check_url varchar(100)
+  task_result_datetime datetime
+  task_result_items_count integer
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table serps {
+  id integer [primary key, increment]
+  serp_task_id integer [ref: > serp_tasks.id]
+  serp_type varchar(16)
+  serp_rank_group integer
+  serp_rank_absolute integer
+  serp_xpath varchar(100)
+  serp_domain varchar(100)
+  serp_title varchar(200)
+  serp_url varchar(200)
+  serp_image_url varchar(200)
+  serp_snippet text
+  serp_time_published varchar(16)
+  serp_timestamp datetime
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table summaries {
+  id integer [primary key, increment]
+  serp_id integer [ref: > serps.id]
+  cluster_id integer [null, ref: clusters.id]
+  url varchar(200)
+  content text [null]
+  summary text [null]
+  error text [null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table clusters {
+  id integer [primary key, increment]
+  created_at timestamp
+  updated_at timestamp  
+}
+
+Table sentiments {
+  id integer [primary key, increment]
+  created_at timestamp
+  updated_at timestamp  
+}

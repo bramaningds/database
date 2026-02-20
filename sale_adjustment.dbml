@@ -1,0 +1,26 @@
+Table sales {
+    id integer [primary key, increment]
+}
+
+Table sale_items {
+    id integer [primary key, increment]
+    sale_id integer
+    item_id integer
+    quantity double
+    price double
+}
+
+Table modifiers {
+    id integer [primary key, increment]
+    name varchar [unique]
+    modifier_type varchar [note: 'percent,amount']
+    value double
+}
+
+Table adjustments {
+    id integer [primary key, increment]
+    sale_id integer [ref: > sales.id]
+    modifier_id integer [ref: > modifiers.id]
+    value double
+    amount double
+}

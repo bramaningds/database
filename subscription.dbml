@@ -1,22 +1,18 @@
 // LEVEL 1
-Table plans {
-    id integer [primary key, increment]
-    name varchar
-}
-
-// LEVEL 2
 Table subscriptions {
     id integer [primary key, increment]
-    plan_id integer [ref: > plans.id]
-    subscribable_id integer
+    subscriber_id integer [note: 'subscribing party']
+    subscriber_type varchar
+    subscribable_id integer [note: 'something to subscribed to']
     subscribable_type varchar
+    subscription_type subscription_type
+    subscribed_at datetime
     started_at datetime
     end_at datetime
-    subscription_type subscription_type
     subscription_status subscription_status
 }
 
-// LEVEL 3
+// LEVEL 2
 Table invoices {
     id integer [primary key, increment]
     subscription_id integer [ref: > subscriptions.id]
@@ -25,7 +21,14 @@ Table invoices {
     amount double
 }
 
-// LEVEL 4
+Table upgrades {
+    id integer [primary key, increment]
+    upgrader_id integer
+    upgradable_id integer [ref: > subscriptions.id]
+    upgraded_id integer [ref: > subscriptions.id]
+}
+
+// LEVEL 3
 Table payments {
     id integer [primary key, increment]
     invoice_id integer [ref: > invoices.id]
@@ -48,6 +51,7 @@ Enum subscription_status {
     cancelled [note: 'terminated by user']
     expired
     grace_period
+    upgraded
 }
 
 Enum payment_status {

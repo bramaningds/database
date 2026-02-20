@@ -1,0 +1,48 @@
+// LEVEL 1
+Table items {
+    id integer [primary key, increment]
+    name varchar
+}
+
+Table units {
+    id integer [primary key, increment]
+    name varchar
+}
+
+Table locations {
+    id integer [primary key, increment]
+    name varchar    
+}
+
+// LEVEL 2
+Table stocks {
+    id integer [primary key, increment]
+    item_id integer [ref: > items.id]
+    location_id integer [ref: > locations.id]
+    unit_id integer [ref: > units.id]
+    quantity double
+    is_base boolean
+}
+
+Table conversions {
+    id integer [primary key, increment]
+    item_id integer [ref: > items.id]
+    from_unit_id integer [ref: > units.id]
+    to_unit_id integer [ref: > units.id]
+    fraction double
+}
+
+Table movements {
+    id integer [primary key, increment]
+    from_location_id integer [ref: > locations.id]
+    to_location_id integer [ref: > locations.id]
+}
+
+// LEVEL 3
+Table movement_items {
+    id integer [primary key, increment]
+    movement_id integer [ref: > movements.id]
+    item_id integer [ref: > items.id]
+    unit_id integer [ref: > units.id]
+    quantity double
+}

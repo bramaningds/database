@@ -1,23 +1,12 @@
 //
 // Level 1
 //
-Table tenants {
-    id integer [primary key, increment]
-    name varchar
-    created_at datetime
-    updated_at datetime
-}
-
-//
-// Level 2
-//
 Table stores {
     id integer [primary key, increment]
     tenant_id integer [ref: > tenants.id]
     name varchar
     can_sell boolean
-    created_at datetime
-    updated_at datetime
+    can_purchase boolean
 }
 
 Table users {
@@ -26,65 +15,49 @@ Table users {
     name varchar
     email varchar
     password varchar
-    created_at datetime
-    updated_at datetime
 }
 
 Table categories {
     id integer [primary key, increment]
     tenant_id integer [ref: > tenants.id]
     name varchar
-    created_at datetime
-    updated_at datetime
 }
 
 Table customers {
     id integer [primary key, increment]
     tenant_id integer [ref: > tenants.id]
     name varchar
-    created_at datetime
-    updated_at datetime
 }
 
 Table suppliers {
     id integer [primary key, increment]
     tenant_id integer [ref: > tenants.id]
     name varchar
-    created_at datetime
-    updated_at datetime
+}
+
+//
+// Level 2
+//
+Table items {
+    id integer [primary key, increment]
+    category_id integer [ref: > categories.id]
+    name varchar
 }
 
 //
 // Level 3
 //
-Table products {
+Table stocks {
     id integer [primary key, increment]
-    category_id integer [ref: > categories.id]
-    name varchar
-    sku varchar
-    price double
-    stock double
+    store_id integer [ref: > stores.id]
+    item_id integer [ref: > items.id]
+    quantity double
     unit varchar
-    created_at datetime
-    updated_at datetime
+    selling_price double
 }
 
 //
 // Level 4
-//
-Table stocks {
-    id integer [primary key, increment]
-    store_id integer [ref: > stores.id]
-    product_id integer [ref: > products.id]
-    quantity double
-    unit varchar
-    selling_price double
-    created_at datetime
-    updated_at datetime
-}
-
-//
-// Level 5
 //
 Table sales {
     id integer [primary key, increment]
@@ -92,8 +65,6 @@ Table sales {
     user_id integer [ref: > users.id]
     customer_id integer [ref: > customers.id]
     sold_at datetime
-    created_at datetime
-    updated_at datetime
 }
 
 Table purchases {
@@ -102,8 +73,6 @@ Table purchases {
     user_id integer [ref: > users.id]
     supplier_id integer [ref: > suppliers.id]
     sold_at datetime
-    created_at datetime
-    updated_at datetime
 }
 
 Table transfers {
@@ -112,8 +81,6 @@ Table transfers {
     user_id integer [ref: > users.id]
     sent_at datetime [null]
     received_at datetime [null]
-    created_at datetime
-    updated_at datetime
 }
 
 //
@@ -139,7 +106,7 @@ Table transfer_details {
     id integer [primary key, increment]
     transfer_id integer [ref: > transfers.id]
     store_id integer [ref: > stores.id]
-    item_id integer [ref: > products.id]
+    item_id integer [ref: > items.id]
     quantity double
     unit varchar
 }

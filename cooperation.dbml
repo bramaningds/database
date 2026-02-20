@@ -1,0 +1,86 @@
+Table users {
+  id integer [primary key, increment]
+  name varchar(100)
+  email varchar(100)
+  password varchar(100)
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table members {
+  id integer [primary key, increment]
+  nik varchar(16) [unique]
+  name varchar(100)
+  address varchar(1000)
+  phone varchar(20)
+  identity_document text
+  is_active bool [default: true]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table registrations {
+  id integer [primary key, increment]
+  user_id integer [ref: > users.id] // Admin yang memproses
+  member_id integer [ref: > members.id]
+  registered_at date
+  created_at timestamp
+}
+
+Table terminations {
+  id integer [primary key, increment]
+  user_id integer [ref: > users.id] // Admin yang memproses
+  member_id integer [ref: > members.id]
+  reason text
+  terminated_at date
+  created_at timestamp
+}
+
+Table savings {
+  id integer [primary key, increment]
+  name varchar(100)
+  is_mandatory bool
+  is_recurring bool
+  is_fixed_amount bool
+  amount decimal [null]
+  is_withdrawable bool
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table accounts {
+  id integer [primary key, increment]
+  saving_id integer [ref: > savings.id]
+  member_id integer [ref: > members.id]
+  balance decimal [default: 0]
+  opened_at datetime
+  closed_at datetime [null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table deposits {
+  id integer [primary key, increment]
+  user_id integer [ref: > users.id]
+  account_id integer [ref: > accounts.id]
+  deposited_at datetime
+  period_month integer [null]
+  period_year integer [null]
+  amount decimal
+  payment_method varchar
+  reference varchar [null]
+  status varchar [default: 'success'] // pending, success, failed
+  created_at timestamp
+}
+
+Table withdrawals { // Perbaikan nama tabel menjadi plural
+  id integer [primary key, increment]
+  user_id integer [ref: > users.id]
+  account_id integer [ref: > accounts.id]
+  withdrawn_at datetime
+  amount decimal
+  payment_method varchar
+  reference varchar [null]
+  status varchar [default: 'success']
+  created_at timestamp
+}
